@@ -1,0 +1,23 @@
+# veri.toml
+# Policy config for veri. Keep it minimal, then evolve.
+
+[output]
+format = "text"      # text | json
+fail_on = "high"     # low | medium | high | critical
+
+[scope]
+mode = "staged"      # staged | worktree | repo
+
+[allowlist]
+# Strings or regexes you want to ignore (e.g., test tokens)
+patterns = [
+  "DUMMY_SECRET",
+  "example_token_",
+]
+
+[entropy_guard]
+enabled = true
+min_length = 24
+threshold = 4.2
+# file extensions to ignore for entropy checks
+ignore_ext = ["png", "jpg", "gif", "mp4", "pdf"]

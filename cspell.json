@@ -1,0 +1,28 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+        "anyhow",
+        "chrono",
+        "direnv",
+        "fenix",
+        "justfile",
+        "masakitakemura",
+        "nixpkgs",
+        "numtide",
+        "pgdata",
+        "serde",
+        "thiserror",
+        "veri",
+        "veto",
+        "xtask"
+    ],
+    "ignorePaths": [
+        "target",
+        "**/*.lock",
+        ".git",
+        ".github",
+        ".direnv",
+        "node_modules"
+    ]
+}
