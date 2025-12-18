@@ -31,12 +31,19 @@ pub struct OutputConfig {
     pub fail_on: String, // "low" | "medium" | "high" | "critical"
 }
 
-fn default_format() -> String { "text".to_string() }
-fn default_fail_on() -> String { "high".to_string() }
+fn default_format() -> String {
+    "text".to_string()
+}
+fn default_fail_on() -> String {
+    "high".to_string()
+}
 
 impl Default for OutputConfig {
     fn default() -> Self {
-        Self { format: default_format(), fail_on: default_fail_on() }
+        Self {
+            format: default_format(),
+            fail_on: default_fail_on(),
+        }
     }
 }
 
@@ -46,10 +53,16 @@ pub struct ScopeConfig {
     pub mode: String, // "staged" | "worktree" | "repo"
 }
 
-fn default_mode() -> String { "staged".to_string() }
+fn default_mode() -> String {
+    "staged".to_string()
+}
 
 impl Default for ScopeConfig {
-    fn default() -> Self { Self { mode: default_mode() } }
+    fn default() -> Self {
+        Self {
+            mode: default_mode(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -59,7 +72,9 @@ pub struct AllowlistConfig {
 }
 
 impl Default for AllowlistConfig {
-    fn default() -> Self { Self { patterns: vec![] } }
+    fn default() -> Self {
+        Self { patterns: vec![] }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -74,9 +89,15 @@ pub struct EntropyGuardConfig {
     pub ignore_ext: Vec<String>,
 }
 
-fn default_enabled() -> bool { true }
-fn default_min_length() -> usize { 24 }
-fn default_threshold() -> f64 { 4.2 }
+fn default_enabled() -> bool {
+    true
+}
+fn default_min_length() -> usize {
+    24
+}
+fn default_threshold() -> f64 {
+    4.2
+}
 
 impl Default for EntropyGuardConfig {
     fn default() -> Self {
@@ -84,7 +105,14 @@ impl Default for EntropyGuardConfig {
             enabled: default_enabled(),
             min_length: default_min_length(),
             threshold: default_threshold(),
-            ignore_ext: vec!["png".into(), "jpg".into(), "gif".into(), "mp4".into(), "pdf".into()],
+            ignore_ext: vec![
+                "png".into(),
+                "jpg".into(),
+                "gif".into(),
+                "mp4".into(),
+                "pdf".into(),
+                "lock".into(),
+            ],
         }
     }
 }

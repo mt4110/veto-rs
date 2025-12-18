@@ -1,5 +1,5 @@
 {
-  description = "veri-rs - local verification gates (Rust)";
+  description = "veto-rs - local verification gates (Rust)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
@@ -26,8 +26,8 @@
         };
 
         packages.default = pkgs.rustPlatform.buildRustPackage {
-          pname = "veri";
-          version = "0.0.0";
+          pname = "veto";
+          version = "0.2.1";
           src = ./.;
           cargoLock.lockFile = ./Cargo.lock;
           nativeBuildInputs = [ pkgs.pkg-config ];

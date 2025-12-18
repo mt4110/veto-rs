@@ -10,6 +10,6 @@ test:
   cargo test --workspace
 
 run:
-  cargo run -p veri-cli -- scan
+  cargo run -p veto-cli -- scan
 
 ci: fmt clippy test

@@ -1,16 +1,16 @@
 [workspace]
 resolver = "2"
 members = [
-  "crates/veri-core",
-  "crates/veri-config",
-  "crates/veri-cli",
+  "crates/veto-core",
+  "crates/veto-config",
+  "crates/veto-cli",
   "crates/xtask",
 ]
 
 [workspace.package]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/mt4110/veri-rs"
+repository = "https://github.com/mt4110/veto-rs"
 rust-version = "1.75"
 
 [workspace.dependencies]

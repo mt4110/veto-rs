@@ -457,20 +457,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 
 [[package]]
-name = "veri-cli"
-version = "0.0.0"
+name = "veto-cli"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "clap",
  "serde",
  "serde_json",
- "veri-config",
- "veri-core",
+ "veto-config",
+ "veto-core",
 ]
 
 [[package]]
-name = "veri-config"
-version = "0.0.0"
+name = "veto-config"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "serde",
@@ -479,8 +479,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "veri-core"
-version = "0.0.0"
+name = "veto-core"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -612,7 +612,7 @@ dependencies = [
 
 [[package]]
 name = "xtask"
-version = "0.0.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
 ]

@@ -7,13 +7,13 @@
 - **Mono-core / multi-tool**: keep one core engine, allow multiple thin front-ends.
 
 ## Workspace crates
-- `veri-core`
+- `veto-core`
   - Domain model: `Finding`, `Report`, `Severity`
   - Check framework: `Check` trait, `Runner`
   - Context: repo root, execution scope (staged diff / full tree / etc.)
-- `veri-config`
-  - `veri.toml` parsing + defaults (keeps policy outside code)
-- `veri-cli`
+- `veto-config`
+  - `veto.toml` parsing + defaults (keeps policy outside code)
+- `veto-cli`
   - CLI UX: `scan`, `doctor`, formats, exit codes
 - `xtask`
   - Optional developer tooling (release notes, version bump, etc.)

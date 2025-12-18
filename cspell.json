@@ -8,13 +8,16 @@
         "fenix",
         "justfile",
         "masakitakemura",
+        "nixos",
         "nixpkgs",
         "numtide",
         "pgdata",
+        "pname",
         "serde",
         "thiserror",
         "veri",
         "veto",
+        "worktree",
         "xtask"
     ],
     "ignorePaths": [

@@ -3,18 +3,23 @@ use std::path::PathBuf;
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 
-use veri_core::{Context, Runner, Severity};
-use veri_core::runner::ScopeMode;
-use veri_config::Config;
+use veto_config::Config;
+use veto_core::checks::entropy_guard::EntropyGuard;
+use veto_core::runner::ScopeMode;
+use veto_core::{Context, Runner, Severity};
 
 #[derive(Parser, Debug)]
-#[command(name = "veri", version, about = "Local verification gates (fast, safe output).")]
+#[command(
+    name = "veto",
+    version,
+    about = "Local verification gates (fast, safe output)."
+)]
 struct Cli {
     /// Repo root (default: current dir)
     #[arg(long)]
     repo: Option<PathBuf>,
 
-    /// Config file path (default: veri.toml if present)
+    /// Config file path (default: veto.toml if present)
     #[arg(long)]
     config: Option<PathBuf>,
 
@@ -49,23 +54,41 @@ fn main() -> Result<()> {
 
     match cli.cmd {
         Command::Doctor => {
-            println!("veri doctor");
+            println!("veto doctor");
             println!("- repo_root: {}", repo_root.display());
-            println!("- config: {}", if cli.config.is_some() { "custom" } else { "default/none" });
+            println!(
+                "- config: {}",
+                if cli.config.is_some() {
+                    "custom"
+                } else {
+                    "default/none"
+                }
+            );
             println!("- rust: {}", env!("CARGO_PKG_RUST_VERSION"));
             Ok(())
         }
         Command::Scan { format, scope } => {
-            let format = format.or_else(|| Some(cfg.output.format.clone())).unwrap_or_else(|| "text".into());
-            let scope = scope.or_else(|| Some(cfg.scope.mode.clone())).unwrap_or_else(|| "staged".into());
+            let format = format
+                .or_else(|| Some(cfg.output.format.clone()))
+                .unwrap_or_else(|| "text".into());
+            let scope = scope
+                .or_else(|| Some(cfg.scope.mode.clone()))
+                .unwrap_or_else(|| "staged".into());
 
             let ctx = Context {
                 repo_root,
                 scope: parse_scope(&scope),
             };
 
-            // Runner with a placeholder check (replace with real checks later)
-            let runner = Runner::new().with_check(Box::new(DummyCheck));
+            // Runner with EntropyGuard
+            let entropy_guard = EntropyGuard {
+                enabled: cfg.entropy_guard.enabled,
+                min_length: cfg.entropy_guard.min_length,
+                threshold: cfg.entropy_guard.threshold,
+                ignore_extensions: cfg.entropy_guard.ignore_ext.clone(),
+                allowlist: cfg.allowlist.patterns.clone(),
+            };
+            let runner = Runner::new().with_check(Box::new(entropy_guard));
 
             let report = runner.run(&ctx)?;
 
@@ -88,12 +111,23 @@ fn load_config(override_path: Option<&std::path::Path>) -> Result<Config> {
     let path = if let Some(p) = override_path {
         Some(p.to_path_buf())
     } else {
-        let default = std::path::PathBuf::from("veri.toml");
-        default.exists().then_some(default)
+        // Try veto.toml first, then veri.toml (deprecated)
+        let veto = std::path::PathBuf::from("veto.toml");
+        if veto.exists() {
+            Some(veto)
+        } else {
+            let veri = std::path::PathBuf::from("veri.toml");
+            if veri.exists() {
+                // TODO: Log deprecation warning here if logger is available
+                Some(veri)
+            } else {
+                None
+            }
+        }
     };
 
     if let Some(p) = path {
-        Ok(veri_config::load_from(p)?)
+        Ok(veto_config::load_from(p)?)
     } else {
         Ok(Config::default())
     }
@@ -122,27 +156,29 @@ fn exit_code_from(cfg: &Config, worst: Option<Severity>) -> i32 {
     }
 }
 
-fn print_text(report: &veri_core::Report) {
+fn print_text(report: &veto_core::Report) {
     if report.findings.is_empty() {
         println!("OK (no findings) — {}ms", report.duration_ms);
         return;
     }
 
-    println!("Found {} issue(s) — {}ms", report.findings.len(), report.duration_ms);
+    println!(
+        "Found {} issue(s) — {}ms",
+        report.findings.len(),
+        report.duration_ms
+    );
     for f in &report.findings {
-        let loc = f.location.as_ref().map(|l| format!("{}:{}", l.file, l.line.unwrap_or(0))).unwrap_or_else(|| "-".into());
-        println!("- [{}] {} @ {}", format!("{:?}", f.severity).to_uppercase(), f.title, loc);
+        let loc = f
+            .location
+            .as_ref()
+            .map(|l| format!("{}:{}", l.file, l.line.unwrap_or(0)))
+            .unwrap_or_else(|| "-".into());
+        println!(
+            "- [{}] {} @ {}",
+            format!("{:?}", f.severity).to_uppercase(),
+            f.title,
+            loc
+        );
         println!("  {}", f.message);
-    }
-}
-
-/// Placeholder check — replace with real modules (entropy guard, deps check, etc.)
-struct DummyCheck;
-
-impl veri_core::Check for DummyCheck {
-    fn id(&self) -> &'static str { "CK-000" }
-    fn description(&self) -> &'static str { "Example placeholder check (always passes)." }
-    fn run(&self, _ctx: &Context) -> Result<Vec<veri_core::Finding>> {
-        Ok(vec![])
     }
 }

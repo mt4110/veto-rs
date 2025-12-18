@@ -1,13 +1,13 @@
 [package]
-name = "veri-cli"
-version = "0.0.0"
+name = "veto-cli"
+version = "0.2.1"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 
 [[bin]]
-name = "veri"
+name = "veto"
 path = "src/main.rs"
 
 [dependencies]
@@ -15,5 +15,5 @@ anyhow.workspace = true
 clap.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-veri-core = { path = "../veri-core" }
-veri-config = { path = "../veri-config" }
+veto-core = { path = "../veto-core" }
+veto-config = { path = "../veto-config" }

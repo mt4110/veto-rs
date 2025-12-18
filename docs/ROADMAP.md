@@ -2,25 +2,36 @@
 
 This is intentionally short. The goal is to ship small, then grow.
 
-## v0.1 "Stop the accident"
-- Check framework + JSON output
-- Entropy Guard MVP (staged diff)
-- Allowlist + baseline
-- Pre-commit integration snippet
+## v0.2.1: Stable Release Process (Reproducibility)
+- Fix dates and versions in docs/config
+- Ensure clean tarball (no `._*` files) via `git archive`
+- Include release checklist
 
-## v0.2 "Dependency reality check"
-- Cargo.lock parsing (direct + transitive)
-- Advisory integration (pluggable source: local DB / OSV)
-- Output: package -> findings
+## v0.2.2: Entropy Guard Tuning (Field Ready)
+- Improved tokenization (URL/Base64 handling)
+- File/Line size limits (DoS prevention)
+- --explain output (no raw values)
 
-## v0.3 "Trust chain"
-- Signature verification (tag/commit verify)
-- Policy: required signature for protected refs
+## v0.2.3: Repo Scan (EG-2)
+- Repo-wide scan implementation
+- Default directory ignores (`.git`, `target`, etc.)
+- Output stability
 
-## v0.4 "Repro or it didn't happen"
-- Nix build reproducibility check (hash consistency)
-- CI integration patterns
+## v0.2.4: Robust Allowlist
+- Regex support
+- Scoped allowlist
+- Config validation improvements
 
-## later
-- Optional Postgres storage for audit logs / dashboards
-- Extra "small tools" as subcommands (zombie-proc, etc.) but powered by shared core
+## v0.2.5: CI/Dev UX
+- `veto install-hook`
+- CI mode optimization
+- GitHub Actions snippets
+
+## v0.3.0: Baseline (Stop the Bleeding)
+- `veto baseline create`
+- `veto scan` with baseline support
+- Stable baseline file format
+
+## v0.4+ "Trust chain & Repro"
+- Release signature verification
+- Nix build reproducibility check

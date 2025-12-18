@@ -7,7 +7,7 @@ Example `.git/hooks/pre-commit` (bash):
 set -euo pipefail
 
 # run staged scope by default
-veri scan --scope staged
+veto scan --scope staged
 ```
 
 Make it executable:

@@ -1,5 +1,5 @@
-# veri.toml
-# Policy config for veri. Keep it minimal, then evolve.
+# veto.toml
+# Policy config for veto. Keep it minimal, then evolve.
 
 [output]
 format = "text"      # text | json
@@ -20,4 +20,4 @@ enabled = true
 min_length = 24
 threshold = 4.2
 # file extensions to ignore for entropy checks
-ignore_ext = ["png", "jpg", "gif", "mp4", "pdf"]
+ignore_ext = ["png", "jpg", "gif", "mp4", "pdf", "lock"]

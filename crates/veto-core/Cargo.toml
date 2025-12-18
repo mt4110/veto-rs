@@ -1,6 +1,6 @@
 [package]
-name = "veri-config"
-version = "0.0.0"
+name = "veto-core"
+version = "0.2.1"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
@@ -8,6 +8,6 @@ rust-version.workspace = true
 
 [dependencies]
 anyhow.workspace = true
+chrono.workspace = true
 serde.workspace = true
-toml.workspace = true
 thiserror.workspace = true

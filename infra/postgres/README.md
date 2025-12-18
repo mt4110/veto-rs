@@ -7,7 +7,7 @@ docker compose up -d
 ```
 
 Connection example:
-- user: `veri`
-- password: `veri`
-- db: `veri`
+- user: `veto`
+- password: `veto`
+- db: `veto`
 - host: `localhost:5432`

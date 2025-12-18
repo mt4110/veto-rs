@@ -1,39 +1,57 @@
-# veri-rs
-**Local verification gates** for developers and CI: stop accidents *before* they land.
+# veto-rs
 
-## What it is
-`veri` is a Rust CLI that runs a set of **checks** against your repo (or staged diff) and returns:
-- human-readable output (safe by default)
-- machine-readable JSON
-- non-zero exit codes to block commits/CI when needed
+[English](README_EN.md) | **日本語**
 
-This repo is structured as a small workspace:
-- `veri-core`  : check framework + report model (no CLI, no IO assumptions)
-- `veri-config`: config parsing + defaults
-- `veri-cli`   : user-facing CLI (subcommands, formats, exit codes)
-- `xtask`      : release/dev helpers (optional)
+**開発者とCIのためのローカル検証ゲート**: 事故が起きる *前* に阻止します。
 
-## Quick start
+## 概要
+`veto` は、リポジトリ（またはステージングされた差分）に対して一連の **チェック** を実行する Rust 製 CLI ツールです。
+
+- 人間に読みやすい出力（デフォルトで安全）
+- 機械可読な JSON 出力
+- 必要に応じてコミットや CI をブロックするための非ゼロ終了コード
+
+このリポジトリは小さなワークスペースとして構成されています：
+- `veto-core`  : チェックのフレームワーク + レポートモデル（CLIなし、IO仮定なし）
+- `veto-config`: 設定のパース + デフォルト値
+- `veto-cli`   : ユーザー向け CLI（サブコマンド、フォーマット、終了コード）
+- `xtask`      : リリース/開発ヘルパー（オプション）
+
+## 前提条件 (Prerequisites)
+
+マルチプラットフォームでの動作と再現性を保証するため、開発には **Nix** の使用を強く推奨します。
+
 ```bash
-cargo run -p veri-cli -- scan
+# direnvを使用する場合（推奨）
+direnv allow
+
+# または明示的にシェルに入る場合
+nix develop
 ```
 
-JSON output:
+`cargo` コマンドを実行する前に、必ず上記のいずれかで Nix 環境に入ってください。
+
+## クイックスタート
 ```bash
-cargo run -p veri-cli -- scan --format json
+cargo run -p veto-cli -- scan
 ```
 
-## Config
-Copy:
-- `config/veri.toml.example` → `veri.toml`
+JSON 出力:
+```bash
+cargo run -p veto-cli -- scan --format json
+```
 
-## Optional infra
-- `infra/postgres/docker-compose.yml` (only if you later want audit logs / shared state)
+## 設定 (Config)
+コピーして使用します：
+- `config/veto.toml.example` → `veto.toml`
 
-## Roadmap (high level)
-- Entropy Guard (staged diff secret blocker)
-- Dependency checks (Cargo.lock / npm lock / OSV)
-- Signature verification (tags / commits)
-- Build reproducibility checks (Nix-oriented)
+## オプションのインフラ`
+- `infra/postgres/docker-compose.yml` (監査ログや共有状態が必要な場合のみ)
 
-See: `docs/ROADMAP.md`
+## ロードマップ (High level)
+- Entropy Guard (ステージングされた差分からの秘密情報検出)
+- 依存関係チェック (Cargo.lock / npm lock / OSV)
+- 署名検証 (タグ / コミット)
+- ビルド再現性チェック (Nix 指向)
+
+参照: `docs/ROADMAP.md`

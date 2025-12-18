@@ -2,21 +2,21 @@
 
 Purpose: 設定ファイルの全オプションと仕様。
 
-- Status: Partial Verified (Schema verified; Behavior pending)
-- Last verified: 2025-12-17 (config load + precedence tested)
+- Status: Verified (Schema & Behavior)
+- Last verified: 2025-12-18 (Entropy Guard config applied correctly, allowlist substring match)
 
 ## Overview
-`veri.toml` をプロジェクトルートに配置することで、スキャンの挙動をカスタマイズできます。
+`veto.toml` をプロジェクトルートに配置することで、スキャンの挙動をカスタマイズできます。
 
-> [!NOTE]
-> **Implementation status (v0.0.0)**
-> 本ドキュメントは **設定スキーマの仕様** を定義します。allowlist/entropy_guard 等の設定はロードされますが、実際のチェック処理への適用は対応するチェック実装の完了を待って有効になります。
+> **Implementation status (v0.2.0)**
+> Entropy Guard 設定は実装済・検証済です。
+> `allowlist` は部分一致(substring match)として機能します。正規表現は未対応です。
 
 ## Precedence
 設定の優先順位は以下の通りです（上が優先）：
 
 1. **CLI引数** (例: `--format json`)
-2. **設定ファイル** (`veri.toml`)
+2. **設定ファイル** (`veto.toml` > `veri.toml` [deprecated])
 3. **デフォルト値** (Code内蔵)
 
 ## Minimal Config
@@ -61,7 +61,7 @@ ignore_ext = ["png", "jpg", "gif", "mp4", "pdf"]
 - **`fail_on`** (String)
     - デフォルト: `"high"`
     - 許容値: `"low"`, `"medium"`, `"high"`, `"critical"`
-    -説明: 指定した重大度以上のissueが見つかった場合に終了コード 1 を返す。(Pending: チェック実装後に検証可能)
+    - 説明: 指定した重大度以上のissueが見つかった場合に終了コード 1 を返す。(Verified: High severity findings exit with 1)
 
 ### `[scope]`
 スキャン対象の範囲。
@@ -99,8 +99,9 @@ ignore_ext = ["png", "jpg", "gif", "mp4", "pdf"]
     - 説明: エントロピーチェックから除外する拡張子（バイナリファイル等）。
 
 ## Notes
-- **ファイルパス**: 設定ファイルはデフォルトで **実行時のカレントディレクトリ** の `veri.toml` を探します。
-    - 別のパスを指定したい場合は `--config path/to/veri.toml` を使用してください。
+- **ファイルパス**: 設定ファイルはデフォルトで **実行時のカレントディレクトリ** の `veto.toml` を探します。
+    - `veto.toml` が見つからない場合、後方互換性のため `veri.toml` を探します（**deprecated**）。
+    - 別のパスを指定したい場合は `--config path/to/veto.toml` を使用してください。
     - `--repo` オプションはスキャン対象のルートを指定するものであり、設定ファイルの探索場所には影響しません（独立しています）。
 - **`entropy_guard.threshold`**: 値を下げすぎると誤検知が増えます。通常はデフォルトの `4.2` 〜 `4.5` 程度が推奨です。
 
